@@ -17,7 +17,7 @@ import Webrtc from 'gun/lib/webrtc'
 Vue.config.productionTip = false
 
 let peers = process.env.NODE_ENV === 'development' ? ['https://i.dozy.io:8765/gun'] : ['https://mvp-gun.herokuapp.com/gun', 'https://e2eec.herokuapp.com/gun']
-
+// let peers = ['https://mvp-gun.herokuapp.com/gun', 'https://e2eec.herokuapp.com/gun'];
 Vue.use(VueGun, {
     gun: new Gun(
         {peers: peers},

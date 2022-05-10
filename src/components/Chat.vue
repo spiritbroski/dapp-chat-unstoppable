@@ -36,10 +36,10 @@
             </div>
         </div>
         <div class="container">
-            <div class="form">
+            <div class="form" v-if="isUnstoppable || isLogin">
                 <div class="columns is-gapless">
                     <div class="column is-narrow">
-                        <input class="input is-medium username" v-model="user" :style="{backgroundColor: stringToColor(user)}" style="color: white">
+                        <input class="input is-medium username" :disabled="isUnstoppable" v-model="user" :style="{backgroundColor: stringToColor(user)}" style="color: white">
                     </div>
                     <div class="column">
                         <input class="input is-medium" v-model="newMessage" placeholder="say hello..." v-on:keyup.enter="send" />
@@ -49,6 +49,19 @@
                     </div>
                 </div>
             </div>
+             <div class="columns">
+                    <div class="column mt-5">
+                        <button v-if="!isLogin" @click="loginAsGuest" class="button button2 is-dark">Login As Guest</button>
+                      
+                    </div>
+                    <div class="column mt-5">
+                        <button v-if="!isUnstoppable && !isLogin" @click="login" class="button button2 is-link" style="background-color:#4b47ee;"><img style="height:30px;" :src="require('../images/a.svg')" />Login with Unstoppable</button>
+                    </div>
+                   
+                </div>
+                 <div class="column mt-5">
+                        <button v-if="isUnstoppable || isLogin" class="button button2 is-danger" @click="logout">Log Out</button>
+                    </div>
             <div v-if="error" class="notification is-warning sendingError">Error: {{ error }}</div>
         </div>
         <div class="chatroom"><span class="chatroom-label-chat">Chat</span>room {{chatroom}}</div>
@@ -63,7 +76,7 @@ import StatBox from '@/components/StatBox'
 import Gun from 'gun/gun'
 import {animals} from '@/misc/animals'
 import {adjectives} from '@/misc/adjectives'
-
+import UAuth from '@uauth/js'
 export default {
     components: {
         Timestamp,
@@ -74,6 +87,8 @@ export default {
     gun: new Object, //non-reactive, handle changes with .on
     data: function() {
         return {
+            isUnstoppable:false,
+            isLogin:false,
             //gun: null,
             messages: {},
             mesh: null,
@@ -131,12 +146,42 @@ export default {
         }
     },
     methods: {
+        loginAsGuest(){
+            this.isLogin = true
+                    this.isUnstoppable = false
+                     this.user = this.generateUsername()
+        },
+        async login(){
+              try {
+                const uauth = new UAuth({
+                  clientID: 'e23e7fbe-75fb-42fd-a935-483305535225',redirectUri:"https://dapp-chat-virid.vercel.app"
+                })
+                const authorization = await uauth.loginWithPopup()
+ if(authorization){
+                    this.isLogin = true
+                    this.isUnstoppable = true
+                    this.user = authorization.idToken.sub
+                    
+ }
+                // console.log(authorization)
+              } catch (e) {
+                console.log(e.message);
+                         this.isLogin = false
+                    this.isUnstoppable = false
+                // onJoinUnstoppable(false, null);
+              }
+        },
+        async logout(){
+            localStorage.user='';
+            this.isLogin = false
+                    this.isUnstoppable = false
+        },
         send(){
             if(this.newMessage.trim() == ''){
                 return
             }
             let msgId = this.generateId(20)
-            if(this.user == ''){
+            if(this.user == ''&& this.isUnstoppable===false){
                 this.user = this.generateUsername()
             }
             //this.$options.gun.get(msgId).put(this.newMessage)// XXX WORKING WITH WEBRTC XXX
@@ -294,10 +339,10 @@ export default {
             console.log('bye', peer)
             this.connectionDetails()
         })
-
-        if(localStorage.user){
-            this.user = localStorage.user
-        } else {
+if(this.isUnstoppable){
+    console.log()
+}
+       else {
             this.user = this.generateUsername()
         }
         this.getGunUpdates()
@@ -371,9 +416,22 @@ export default {
 .button {
     border-radius: 0 4px 4px 0;
 }
+.button2 {
+    border-radius: 4px 4px 4px 4px;
+}
+.button2:hover{
+    background-color:#0b24b3;
+}
+
 @media screen and (max-width: 768px){
     .button {
         border-radius: 0 0 4px 4px;
+        padding-left: 2em;
+        padding-right: 2em;
+        width: 100%;
+    }
+     .button2 {
+        border-radius: 4px 4px 4px 4px;
         padding-left: 2em;
         padding-right: 2em;
         width: 100%;
