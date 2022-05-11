@@ -1,26 +1,24 @@
-# Chat using GUN db and Vue.js - Dapp
+# Project name
+Chat using GUN db and Vue.js - Dapp
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/6f8d9fe2-9f58-4ef2-9166-5745fc095eba/deploy-status)](https://app.netlify.com/sites/chat-dapp/deploys)
+# Link to working code in a public repo 
+https://github.com/spiritbro1/dapp-chat-unstoppable
 
-## Example site
-[https://chat-dapp.netlify.app/](https://chat-dapp.netlify.app/)
+# Recorded video demo of the integration (max. 3 mins)
+https://user-images.githubusercontent.com/62529025/167747206-f310da4a-7861-4b48-af77-e12e21de912d.mp4
 
-## Configure your gun peers
-Edit src/main.js and update the peer list
+# Person of contact in case there are any questions
+## Discord ID
 
-## Project setup
-```
-npm install
-```
+spiritbro1#1101
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## UnstoppableDomain registered account email address 
 
-### Compiles and minifies for production
-```
-npm run build
-```
+3aml5sclu@mozmail.com
 
-MIT License
+# Website demo
+
+https://dapp-chat-virid.vercel.app/
+
+
+
