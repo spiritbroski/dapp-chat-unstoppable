@@ -20,5 +20,16 @@ spiritbro1#1101
 
 https://dapp-chat-virid.vercel.app/
 
+# How to Develop
 
+```bash
+$ yarn
+$ yarn serve
+```
+
+# How to deploy to vercel
+
+```bash
+$ vercel .
+```
 
